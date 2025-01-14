@@ -1,0 +1,19 @@
+database:
+  db: 'postgres'
+  dsn: "postgres://postgres:123456@localhost:5432/postgres?sslmode=disable"
+  tables:
+    - 'users'
+    - 'orders'
+    - 'products'
+    - 'stock'
+    - 'payments'
+
+  outFile: 'gen.go'  # All models combined into a single file
+  outPath: './model/query' # The output directory
+  modelPkgName: '../../../../modules/entities/dbmodels'
+  fieldWithTypeTag: true
+  fieldNullable: true
+  fieldWithIndexTag: true
+  withUnitTest: false
+  onlyModel: true
+  fieldSignable: false
