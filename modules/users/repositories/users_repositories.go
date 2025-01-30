@@ -35,3 +35,18 @@ func (r *usersRepo) GetUserAndOrderListById(id string) (*entities.GetUserAndOrde
 
 	return &res, nil
 }
+
+func (r *usersRepo) UserLogin(email string, password string) (*entities.UserLoginRes, error) {
+	usersModel := dbmodels.User{}
+	res := entities.UserLoginRes{}
+
+	err := r.Db.Model(&usersModel).
+		Where("email = ? AND password = ?", email, password).
+		First(&res).Error
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &res, nil
+}

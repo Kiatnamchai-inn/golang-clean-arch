@@ -2,11 +2,13 @@ package entities
 
 type UsersUsecase interface {
 	GetUserAndOrderListById(id string) (*GetUserAndOrderListByIdRes, error)
-	// GetUserProductPaymentById(id string) (*UserProductPaymentByIdRes, error)
+	UserLogin(email string, password string) (*UserLoginRes, error)
+	UserLogin2(email string, password string) (*UserLoginRes, error)
 }
 
 type UsersRepository interface {
 	GetUserAndOrderListById(id string) (*GetUserAndOrderListByIdRes, error)
+	UserLogin(email string, password string) (*UserLoginRes, error)
 }
 
 type GetUserAndOrderListByIdRes struct {
@@ -14,6 +16,16 @@ type GetUserAndOrderListByIdRes struct {
 	Name   string       `gorm:"column:name;type:character varying(255);not null" json:"name"`
 	Email  string       `gorm:"column:email;type:character varying(255);not null" json:"email"`
 	Orders []UserOrders `json:"orders" db:"orders" gorm:"foreignKey:UserID"`
+}
+
+type UserLoginReq struct {
+	Email    string `json:"email"`
+	Password string `json:"password"`
+}
+type UserLoginRes struct {
+	ID    int32  `gorm:"column:id;type:integer;primaryKey;autoIncrement:true" json:"id"`
+	Name  string `gorm:"column:name;type:character varying(255);not null" json:"name"`
+	Email string `gorm:"column:email;type:character varying(255);not null" json:"email"`
 }
 
 type UserOrders struct {
@@ -27,18 +39,3 @@ type UserOrders struct {
 func (*UserOrders) TableName() string {
 	return "orders"
 }
-
-// type UserProductPaymentByIdRes struct {
-// 	ID       uint64       `json:"id" db:"id"`
-// 	Name     string       `json:"name" db:"name"`
-// 	Email    string       `json:"email" db:"email"`
-// 	Payments []UserOrders `json:"orders" db:"orders" gorm:"foreignKey:UserID"`
-// }
-
-// type UserProductPayments struct {
-// 	ID        int32 `gorm:"column:id;type:integer;primaryKey;autoIncrement:true" json:"id"`
-// 	UserID    int32 `gorm:"column:user_id;type:integer;not null" json:"user_id"`
-// 	ProductID int32 `gorm:"column:product_id;type:integer;not null" json:"product_id"`
-
-// 	Amount float64 `gorm:"column:amount;type:numeric(10,2);not null" json:"amount"`
-// }
