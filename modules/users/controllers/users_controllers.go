@@ -25,6 +25,15 @@ func (h *usersController) GetUserAndOrderListById(c *fiber.Ctx) error {
 	// Get user id from request
 	userId := c.Params("userId")
 
+	if userId == "" {
+		return c.Status(fiber.ErrBadRequest.Code).JSON(fiber.Map{
+			"status":      fiber.ErrBadRequest.Message,
+			"status_code": fiber.ErrBadRequest.Code,
+			"message":     "user id is required",
+			"result":      nil,
+		})
+	}
+
 	res, err := h.UsersUse.GetUserAndOrderListById(userId)
 	if err != nil {
 		return c.Status(fiber.ErrInternalServerError.Code).JSON(fiber.Map{
