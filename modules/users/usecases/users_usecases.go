@@ -2,23 +2,24 @@ package usecases
 
 import (
 	"errors"
-	"fiber-postgres-api/modules/entities"
+	"fiber-postgres-api/modules/entities/interfaces"
+	"fiber-postgres-api/modules/models"
 )
 
 type usersUse struct {
-	UsersRepo entities.UsersRepository
+	UsersRepo interfaces.UsersRepository
 }
 
 // Constructor
-func NewUsersUsecase(usersRepo entities.UsersRepository) entities.UsersUsecase {
+func NewUsersUsecase(usersRepo interfaces.UsersRepository) interfaces.UsersUsecase {
 	return &usersUse{
 		UsersRepo: usersRepo,
 	}
 }
 
-func (u *usersUse) GetUserAndOrderListById(id string) (*entities.GetUserAndOrderListByIdRes, error) {
+func (u *usersUse) GetUserAndOrderListById(id string) (*models.GetUserAndOrderListByIdRes, error) {
 	if id == "" {
-		return nil, errors.New("user id is required.")
+		return nil, errors.New("user id is required")
 	}
 
 	res, err := u.UsersRepo.GetUserAndOrderListById(id)

@@ -1,7 +1,9 @@
 package controllers
 
 import (
-	"fiber-postgres-api/modules/entities"
+	"fiber-postgres-api/modules/entities/interfaces"
+	entities "fiber-postgres-api/modules/entities/interfaces"
+	usersdto "fiber-postgres-api/modules/transport/http/dto/users"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -10,7 +12,7 @@ type usersController struct {
 	UsersUse entities.UsersUsecase
 }
 
-func NewUsersController(r fiber.Router, usersUse entities.UsersUsecase) {
+func NewUsersController(r fiber.Router, usersUse interfaces.UsersUsecase) {
 	controllers := &usersController{
 		UsersUse: usersUse,
 	}
@@ -33,10 +35,12 @@ func (h *usersController) GetUserAndOrderListById(c *fiber.Ctx) error {
 		})
 	}
 
+	dto := usersdto.MapGetUserAndOrderListByIdRespDTO(res)
+
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{
 		"status":      "OK",
 		"status_code": fiber.StatusOK,
 		"message":     "get user data successfully.",
-		"result":      res,
+		"result":      dto,
 	})
 }
